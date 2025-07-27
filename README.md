@@ -1,46 +1,161 @@
-# Getting Started with Create React App
+#  Furniture Factory Management System (Full Stack Project)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This system is designed to manage the complex, nested data structures used in furniture production — replacing traditional Excel sheets with a scalable, clean, and structured digital interface. Built with .NET Core Web API and React (TypeScript), the app supports full CRUD for Products, Components, and Subcomponents in a modern, Excel-like UI.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+##  Purpose
 
-### `npm start`
+This project solves a real-world need observed in many MENA-based furniture factories: the reliance on manual spreadsheets to manage thousands of rows of structured component data.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+It simplifies and automates:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Product configuration
+- Component hierarchy definition
+- Bulk entry with validations
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##  Tech Stack
 
-### `npm run build`
+| Layer        | Tech Used                                  |
+|--------------|---------------------------------------------|
+| Frontend     | React, TypeScript, MUI (Material UI), Redux Toolkit |
+| Backend      | ASP.NET Core 9, Entity Framework Core, SQL Server |
+| API Design   | RESTful, DTO-based                         |
+| Validation   | Client-side & server-side (no invalid or negative values) |
+| Misc         | Arabic RTL support, Excel-like dynamic table UI |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#  Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Furniture-System/
+ Furniture-System-Api/  ASP.NET Core Web API (Backend)
+ furniture-system-app/ React + Redux + MUI frontend
+ README.md  
+ 
+ 
+ 
+ 
+ 
+---
 
-### `npm run eject`
+##  Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+###  Backend Setup (`Furniture-System-Api`)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+####  Prerequisites
+- .NET 9 SDK
+- SQL Server instance (local)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+####  Run the API
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+cd Furniture-System-Api
+dotnet restore
+dotnet ef database update
+dotnet run
 
-## Learn More
+or run from iis express configuration in microsoft visual studio 2022.
+Project api will run on swaggerUI.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The frontend calls the backend api using the .env file in the root directory of the react.js project which has the localhost of the backend.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Method | Endpoint                      | Description                                                    |
+| ------ | ----------------------------- | -------------------------------------------------------------- |
+| POST   | `/api/Product/AddFullProduct` | Add a full product tree (product + components + subcomponents) |
+| GET    | `/api/Product/GetAll`         | Retrieve all products & children                               |
+| DELETE | `/api/Product/{id}`           | Delete a product and cascade children                          |
+| PUT    | `/api/Product/{id}`           | Update an existing product (if enabled)                        |
+
+Cascade delete is implemented: deleting a product removes its components and subcomponents.
+
+
+ Frontend Setup (furniture-system-app)
+ Prerequisites
+Node.js 
+npm
+
+ Run the Frontend
+bash
+Copy
+Edit
+cd furniture-system-app
+npm install
+npm run
+
+
+
+Features
+ 3-level nesting (Product → Component → Subcomponent)
+
+ Auto calculation: totalQuantity = count * quantity
+
+ Multiple dimension entries: detail, cutting, final
+
+ Veneer layer inputs: inner & outer
+
+ Form validation: block negative numbers & invalid strings
+
+ Excel-style editable grid with placeholder handling
+ 
+ 
+ {
+  "productName": "Table X",
+  "price": 1000,
+  "components": [
+    {
+      "componentName": "Leg",
+      "quantity": 4,
+      "subcomponents": [
+        {
+          "subcomponentName": "Wood Plank",
+          "material": "Oak",
+          "customNotes": "Cut from same batch",
+          "count": 2,
+          "totalQuantity": 8,
+          "detailLength": 60,
+          "detailWidth": 5,
+          "detailThickness": 2,
+          "cuttingLength": 62,
+          "cuttingThickness": 2.2,
+          "finalLength": 58,
+          "finalWidth": 4.8,
+          "finalThickness": 1.9,
+          "veneerInner": "Matte",
+          "veneerOuter": "Glossy"
+        }
+      ]
+    }
+  ]
+}
+
+ Validation Rules
+No negative numbers allowed (count, dimensions, price)
+
+No numeric-only input for text fields like names or materials
+
+Placeholder guides for each field (e.g., "Enter material", "mm", "count")
+
+
+Future Roadmap
+Authentication + Role management (Admin vs User) using Microsoft Identity and JWT Token, 
+Serilog and automapper configuration in .NET 
+Fluent Validation in .NET
+
+ Export to Excel or PDF
+
+ Mobile responsiveness
+
+ Search, sort, and filter
+
+ Activity logging & history
+
+ Auto-save draft mode
+ 
+ Delete and edit for full product page for subcomponent
+ 
+ Enhance UI 
+ 
+
